@@ -5,6 +5,8 @@ module Janky
         request = Rack::Request.new(env)
         default_base_url = Builder[:default].url
         payload = Payload.parse(request.body, default_base_url)
+        puts request.body
+        puts payload
 
         if payload.started?
           Build.start(payload.id, payload.url)
