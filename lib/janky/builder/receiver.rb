@@ -2,7 +2,9 @@ module Janky
   module Builder
     class Receiver
       def self.call(env)
+        puts ">>>>> Receiver #{env}"
         request = Rack::Request.new(env)
+        puts request.body
         default_base_url = Builder[:default].url
         payload = Payload.parse(request.body, default_base_url)
         puts request.body
