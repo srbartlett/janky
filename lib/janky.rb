@@ -238,10 +238,10 @@ module Janky
 
       # Hubot API, protected by Basic Auth.
       map "/_hubot" do
-        use Rack::Auth::Basic do |username, password|
-          username == Janky::Hubot.username &&
-            password == Janky::Hubot.password
-        end
+        #use Rack::Auth::Basic do |username, password|
+          #username == Janky::Hubot.username &&
+            #password == Janky::Hubot.password
+        #end
 
         run Janky::Hubot
       end
