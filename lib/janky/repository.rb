@@ -127,7 +127,7 @@ module Janky
     # Ditto but returns the Fixnum room id. Defaults to the one set
     # in Campfire.setup.
     def room_id
-      read_attribute(:room_id) || ChatService.default_room_id
+      nil #read_attribute(:room_id) || ChatService.default_room_id
     end
 
     # Setups GitHub and Jenkins for building this repository.
