@@ -173,42 +173,10 @@ module Janky
 
     Janky::Exception.setup(Janky::Exception::Logger.new($stderr))
 
-    if campfire_account = settings["JANKY_CAMPFIRE_ACCOUNT"]
-      warn "JANKY_CAMPFIRE_ACCOUNT is deprecated. Please use " \
-        "JANKY_CHAT_CAMPFIRE_ACCOUNT instead."
-      settings["JANKY_CHAT_CAMPFIRE_ACCOUNT"] ||=
-        settings["JANKY_CAMPFIRE_ACCOUNT"]
-    end
-
-    if campfire_token = settings["JANKY_CAMPFIRE_TOKEN"]
-      warn "JANKY_CAMPFIRE_TOKEN is deprecated. Please use " \
-        "JANKY_CHAT_CAMPFIRE_TOKEN instead."
-      settings["JANKY_CHAT_CAMPFIRE_TOKEN"] ||=
-        settings["JANKY_CAMPFIRE_TOKEN"]
-    end
-
-    chat_name = settings["JANKY_CHAT"] || "campfire"
-    chat_settings = {}
-    settings.each do |key, value|
-      if key =~ /^JANKY_CHAT_#{chat_name.upcase}_/
-        chat_settings[key] = value
-      end
-    end
-    chat_room = settings["JANKY_CHAT_DEFAULT_ROOM"] ||
-      settings["JANKY_CAMPFIRE_DEFAULT_ROOM"]
-    if settings["JANKY_CAMPFIRE_DEFAULT_ROOM"]
-      warn "JANKY_CAMPFIRE_DEFAULT_ROOM is deprecated. Please use " \
-        "JANKY_CHAT_DEFAULT_ROOM instead."
-    end
-    ChatService.setup(chat_name, chat_settings, chat_room)
-
     if token = settings["JANKY_GITHUB_STATUS_TOKEN"]
       Notifier.setup([
         Notifier::GithubStatus.new(token, api_url),
-        Notifier::ChatService
       ])
-    else
-      Notifier.setup(Notifier::ChatService)
     end
   end
 
@@ -220,8 +188,7 @@ module Janky
       JANKY_BASE_URL
       JANKY_BUILDER_DEFAULT
       JANKY_CONFIG_DIR
-      JANKY_GITHUB_USER JANKY_GITHUB_PASSWORD JANKY_GITHUB_HOOK_SECRET
-      JANKY_HUBOT_USER JANKY_HUBOT_PASSWORD]
+      JANKY_GITHUB_USER JANKY_GITHUB_PASSWORD JANKY_GITHUB_HOOK_SECRET]
   end
 
   class << self
@@ -296,5 +263,4 @@ module Janky
     Janky::ChatService.adapters[name] = service
   end
 
-  register_chat_service "campfire", ChatService::Campfire
 end

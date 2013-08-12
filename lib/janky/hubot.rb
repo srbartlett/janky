@@ -73,7 +73,6 @@ module Janky
         "%-17s %-13s %-10s %40s" % [
           repo.name,
           master.status,
-          repo.campfire_room,
           repo.uri
         ]
       end
