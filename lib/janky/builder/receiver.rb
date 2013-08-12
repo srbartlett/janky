@@ -4,10 +4,9 @@ module Janky
       def self.call(env)
         puts ">>>>> Receiver #{env}"
         request = Rack::Request.new(env)
-        puts request.body
         default_base_url = Builder[:default].url
-        payload = Payload.parse(request.body, default_base_url)
-        puts request.body
+        puts request.body.read
+        payload = Payload.parse(request.body.read, default_base_url)
         puts payload
 
         if payload.started?
